@@ -14,6 +14,9 @@ fn setup(
         )),
         ..Default::default()
         })
+        // Add the PickSource component to the camera to enable mesh 
+        // mesh selection
+        .with(PickSource::default())
         // Light
         .spawn(LightBundle {
             transform: Transform::from_translation(Vec3::new(4.0, 8.0,4.0)),
@@ -45,7 +48,9 @@ fn create_board(
                 },
                 transform: Transform::from_translation( Vec3::new(i as f32, 0.0, j as f32)),
                 ..Default::default()
-            });
+            })
+            // Add component to make this mesh pickable
+            .with(PickableMesh::default());
         }
     }
 }
