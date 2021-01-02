@@ -4,10 +4,31 @@ use bevy_mod_picking::*;
 pub struct BoardPlugin;
 impl Plugin for BoardPlugin {
     fn build(&self, app: &mut AppBuilder) {
+        // Resources need to be initialized before use
         app.init_resource::<SelectedSquare>()
             .add_startup_system(create_board.system())
-            .add_system(color_squares.system());
+            .add_system(color_squares.system())
+            .add_system(select_squares.system());
     }
+}
+
+fn select_squares(
+    pick_state: Res<PickState>,
+    mouse_button_inputs: Res<Input<MouseButton>>,
+    mut selected_square: ResMut<SelectedSquare>,
+) {
+    // Only run if the left mouse button is pressed
+    if !mouse_button_inputs.just_pressed(MouseButton::Left) {
+        return;
+    }
+
+    // Get the square under the cursor and set it to selected
+    selected_square.entity = if let Some((entity, _intersection)) = pick_state.top(Group::default()) 
+    {
+        Some(*entity)
+    } else {
+        None
+    };
 }
 
 fn color_squares(
