@@ -9,13 +9,13 @@ impl Plugin for PiecesPlugin {
 }
 
 #[derive(Clone, Copy, PartialEq)]
-enum PieceColor {
+pub enum PieceColor {
     White,
     Black,
 }
 
 #[derive(Clone, Copy, PartialEq)]
-enum PieceType {
+pub enum PieceType {
     King,
     Queen,
     Bishop,
@@ -25,7 +25,7 @@ enum PieceType {
 }
 
 #[derive(Clone, Copy)]
-struct Piece {
+pub struct Piece {
     pub color: PieceColor,
     pub piece_type: PieceType,
     pub x: u8,
