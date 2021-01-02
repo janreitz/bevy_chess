@@ -63,6 +63,41 @@ fn create_pieces(
     
     let white_material = materials.add(Color::rgb(1.0, 0.8, 0.8).into());
     let black_material = materials.add(Color::rgb(0.0, 0.2, 0.2).into());
+
+    // The king and knight are each two separate meshes.asset_server
+    // They can be combined using parenting
+    commands
+        // Parent entity
+        .spawn(PbrBundle {
+            transform: Transform::from_translation(Vec3::new(0.0, 0.0, 4.0)),
+            ..Default::default()
+        })
+        // Add children
+        // with_children takes a closure that takes a 'parent' parameter
+        // which is similar to 'commands'
+        .with_children(|parent| {
+            parent.spawn(PbrBundle {
+                mesh: king_handle.clone(),
+                material: white_material.clone(),
+                transform: {
+                    let mut transform = Transform::from_translation(Vec3::new(-0.2, 0.0, -1.9));
+                    // Scaling to fit in a square
+                    transform.apply_non_uniform_scale(Vec3::new(0.2, 0.2, 0.2));
+                    transform
+                },
+                ..Default::default()
+            });
+            parent.spawn(PbrBundle {
+                mesh: king_cross_handle.clone(),
+                material: white_material.clone(),
+                transform: {
+                    let mut transform = Transform::from_translation(Vec3::new(-0.2, 0.0, -1.9));
+                    transform.apply_non_uniform_scale(Vec3::new(0.2, 0.2, 0.2));
+                    transform
+                },
+                ..Default::default()
+            });
+        });
 }
 
 fn main() {
@@ -84,6 +119,9 @@ fn main() {
         )
         .add_startup_system(
             create_board.system()
+        )
+        .add_startup_system(
+            create_pieces.system()
         )
         .run();
 }
