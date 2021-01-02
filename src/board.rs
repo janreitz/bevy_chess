@@ -1,6 +1,42 @@
 use bevy::prelude::*;
 use bevy_mod_picking::*;
 
+fn color_squares(
+    pick_state: Res<PickState>,
+    selected_square: Res<SelectedSquare>,
+    mut materials: ResMut<Assets<StandardMaterial>>,
+    // Query provides me with an iterable over all entities
+    // that have these components, in this case 
+    // - Entity(which every entity as)
+    // - Square
+    // - Handle<StandardMaterial>
+    // These components need to be references
+    query: Query<(Entity, &Square, &Handle<StandardMaterial>)>,
+) {
+    // Get entity under the cursor if there is one
+    let top_entity = if let Some((entity, _intersection)) = pick_state.top(Group::default()) {
+        Some(*entity)
+    } else {
+        None
+    };
+
+    for (entity, square, material_handle) in query.iter() {
+        // Get the actual material
+        let material = materials.get_mut(material_handle).unwrap();
+
+        // Change the material color
+        material.albedo = if Some(entity) == top_entity {
+            Color::rgb(0.8, 0.3, 0.3)
+        } else if Some(entity) == selected_square.entity {
+            Color::rgb(0.9, 0.1, 0.1)
+        } else if square.is_white() {
+            Color::rgb(1.0, 0.9, 0.9)
+        } else {
+            Color::rgb(0.0, 0.1, 0.1)
+        };
+    }
+}
+
 // Resource to keep track of which sqaure is currently selected
 // - Default means 'entity' will be None when it is initialized
 #[derive(Default)]
