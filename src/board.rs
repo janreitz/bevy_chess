@@ -1,6 +1,13 @@
 use bevy::prelude::*;
 use bevy_mod_picking::*;
 
+// Resource to keep track of which sqaure is currently selected
+// - Default means 'entity' will be None when it is initialized
+#[derive(Default)]
+struct SelectedSquare {
+    entity: Option<Entity>,
+}
+
 pub struct Square {
     pub x: u8,
     pub y: u8,
