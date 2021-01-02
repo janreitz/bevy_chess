@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-struct PiecesPlugin;
+pub struct PiecesPlugin;
 impl Plugin for PiecesPlugin {
     fn build(&self, app: &mut AppBuilder) {
         app.add_startup_system(create_pieces.system())
