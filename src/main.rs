@@ -1,4 +1,5 @@
 use bevy::prelude::*;
+use bevy_mod_picking::*;
 
 mod pieces;
 use pieces::*;
@@ -203,16 +204,12 @@ fn main() {
             ..Default::default()
         })
         .add_plugins(DefaultPlugins)
+        .add_plugin(PickingPlugin)
+        .add_plugin(DebugPickingPlugin)
         // Startup systems are called only one, at startup
-        .add_startup_system(
-            // calling `system()` on a function turns it into a system
-            setup.system()
-        )
-        .add_startup_system(
-            create_board.system()
-        )
-        .add_startup_system(
-            create_pieces.system()
-        )
+        // calling `system()` on a function turns it into a system
+        .add_startup_system(setup.system())
+        .add_startup_system(create_board.system())
+        .add_startup_system(create_pieces.system())
         .run();
 }
