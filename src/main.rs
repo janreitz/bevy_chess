@@ -41,10 +41,10 @@ fn main() {
         .add_plugins(DefaultPlugins)
         .add_plugin(PickingPlugin)
         .add_plugin(DebugPickingPlugin)
+        .add_plugin(BoardPlugin)
         // Startup systems are called only one, at startup
         // calling `system()` on a function turns it into a system
         .add_startup_system(setup.system())
-        .add_startup_system(create_board.system())
         .add_startup_system(create_pieces.system())
         .run();
 }

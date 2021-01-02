@@ -1,6 +1,15 @@
 use bevy::prelude::*;
 use bevy_mod_picking::*;
 
+pub struct BoardPlugin;
+impl Plugin for BoardPlugin {
+    fn build(&self, app: &mut AppBuilder) {
+        app.init_resource::<SelectedSquare>()
+            .add_startup_system(create_board.system())
+            .add_system(color_squares.system());
+    }
+}
+
 fn color_squares(
     pick_state: Res<PickState>,
     selected_square: Res<SelectedSquare>,
@@ -55,7 +64,7 @@ impl Square {
     }
 }
 
-pub fn create_board(
+fn create_board(
     commands: &mut Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
