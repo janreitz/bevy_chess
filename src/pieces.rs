@@ -1,5 +1,29 @@
 use bevy::prelude::*;
 
+#[derive(Clone, Copy, PartialEq)]
+enum PieceColor {
+    White,
+    Black,
+}
+
+#[derive(Clone, Copy, PartialEq)]
+enum PieceType {
+    King,
+    Queen,
+    Bishop,
+    Knight,
+    Rook,
+    Pawn,
+}
+
+#[derive(Clone, Copy)]
+struct Piece {
+    pub color: PieceColor,
+    pub piece_type: PieceType,
+    pub x: u8,
+    pub y: u8,
+}
+
 pub fn create_pieces(
     commands: &mut Commands,
     asset_server: Res<AssetServer>,
