@@ -1,5 +1,8 @@
 use bevy::prelude::*;
 
+mod pieces;
+use pieces::*;
+
 fn setup(
     commands: &mut Commands,
 ) {
@@ -64,40 +67,128 @@ fn create_pieces(
     let white_material = materials.add(Color::rgb(1.0, 0.8, 0.8).into());
     let black_material = materials.add(Color::rgb(0.0, 0.2, 0.2).into());
 
-    // The king and knight are each two separate meshes.asset_server
-    // They can be combined using parenting
-    commands
-        // Parent entity
-        .spawn(PbrBundle {
-            transform: Transform::from_translation(Vec3::new(0.0, 0.0, 4.0)),
-            ..Default::default()
-        })
-        // Add children
-        // with_children takes a closure that takes a 'parent' parameter
-        // which is similar to 'commands'
-        .with_children(|parent| {
-            parent.spawn(PbrBundle {
-                mesh: king_handle.clone(),
-                material: white_material.clone(),
-                transform: {
-                    let mut transform = Transform::from_translation(Vec3::new(-0.2, 0.0, -1.9));
-                    // Scaling to fit in a square
-                    transform.apply_non_uniform_scale(Vec3::new(0.2, 0.2, 0.2));
-                    transform
-                },
-                ..Default::default()
-            });
-            parent.spawn(PbrBundle {
-                mesh: king_cross_handle.clone(),
-                material: white_material.clone(),
-                transform: {
-                    let mut transform = Transform::from_translation(Vec3::new(-0.2, 0.0, -1.9));
-                    transform.apply_non_uniform_scale(Vec3::new(0.2, 0.2, 0.2));
-                    transform
-                },
-                ..Default::default()
-            });
-        });
+    // Setup all pieces
+    spawn_rook(
+        commands,
+        white_material.clone(),
+        rook_handle.clone(),
+        Vec3::new(0.0,0.0,0.0),
+    );
+    spawn_knight(
+        commands,
+        white_material.clone(),
+        knight_1_handle.clone(),
+        knight_2_handle.clone(),
+        Vec3::new(0., 0., 1.),
+    );
+    spawn_bishop(
+        commands,
+        white_material.clone(),
+        bishop_handle.clone(),
+        Vec3::new(0., 0., 2.),
+    );
+    spawn_queen(
+        commands,
+        white_material.clone(),
+        queen_handle.clone(),
+        Vec3::new(0., 0., 3.),
+    );
+    spawn_king(
+        commands,
+        white_material.clone(),
+        king_handle.clone(),
+        king_cross_handle.clone(),
+        Vec3::new(0., 0., 4.),
+    );
+    spawn_bishop(
+        commands,
+        white_material.clone(),
+        bishop_handle.clone(),
+        Vec3::new(0., 0., 5.),
+    );
+    spawn_knight(
+        commands,
+        white_material.clone(),
+        knight_1_handle.clone(),
+        knight_2_handle.clone(),
+        Vec3::new(0., 0., 6.),
+    );
+    spawn_rook(
+        commands,
+        white_material.clone(),
+        rook_handle.clone(),
+        Vec3::new(0., 0., 7.),
+    );
+
+    for i in 0..8 {
+        spawn_pawn(
+            commands,
+            white_material.clone(),
+            pawn_handle.clone(),
+            Vec3::new(1., 0., i as f32),
+        );
+    }
+
+    spawn_rook(
+        commands,
+        black_material.clone(),
+        rook_handle.clone(),
+        Vec3::new(7., 0., 0.),
+    );
+    spawn_knight(
+        commands,
+        black_material.clone(),
+        knight_1_handle.clone(),
+        knight_2_handle.clone(),
+        Vec3::new(7., 0., 1.),
+    );
+    spawn_bishop(
+        commands,
+        black_material.clone(),
+        bishop_handle.clone(),
+        Vec3::new(7., 0., 2.),
+    );
+    spawn_queen(
+        commands,
+        black_material.clone(),
+        queen_handle.clone(),
+        Vec3::new(7., 0., 3.),
+    );
+    spawn_king(
+        commands,
+        black_material.clone(),
+        king_handle.clone(),
+        king_cross_handle.clone(),
+        Vec3::new(7., 0., 4.),
+    );
+    spawn_bishop(
+        commands,
+        black_material.clone(),
+        bishop_handle.clone(),
+        Vec3::new(7., 0., 5.),
+    );
+    spawn_knight(
+        commands,
+        black_material.clone(),
+        knight_1_handle.clone(),
+        knight_2_handle.clone(),
+        Vec3::new(7., 0., 6.),
+    );
+    spawn_rook(
+        commands,
+        black_material.clone(),
+        rook_handle.clone(),
+        Vec3::new(7., 0., 7.),
+    );
+
+    for i in 0..8 {
+        spawn_pawn(
+            commands,
+            black_material.clone(),
+            pawn_handle.clone(),
+            Vec3::new(6., 0., i as f32),
+        );
+    }
 }
 
 fn main() {
