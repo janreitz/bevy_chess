@@ -1,6 +1,17 @@
 use bevy::prelude::*;
 use bevy_mod_picking::*;
 
+pub struct Square {
+    pub x: u8,
+    pub y: u8,
+}
+
+impl Square {
+    fn is_white(&self) -> bool {
+        (self.x + self.y + 1) % 2 == 0
+    }
+}
+
 pub fn create_board(
     commands: &mut Commands,
     mut meshes: ResMut<Assets<Mesh>>,
@@ -27,7 +38,11 @@ pub fn create_board(
                 ..Default::default()
             })
             // Add component to make this mesh pickable
-            .with(PickableMesh::default());
+            .with(PickableMesh::default())
+            .with(Square {
+                x: i,
+                y: j,
+            });
         }
     }
 }
